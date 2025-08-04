@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Presentaciones Ciencia</title>
+</head>
+<body>
+    <div class="main-content">
+
+        <a href="index.html" class="menu-button">← Menú Principal</a>
+
+        <h1>Secciones:</h1>
+        
+        <div class="category-buttons" id="categoryButtons">
+        </div>
+       
+        <div class="button-container" id="pdfButtons">
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANTE: Para agregar presentaciones se debe editar esta seccion para que la incluya
+        // Organizar archivos por categorías
+        const pdfCategories = {
+            'Tercero': [
+                'Presentaciones/Ciencias/Tercero/AplicacionMediciones-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/ApreciarCondicionesPlaneta-GeorginaJiménez.pdf1',
+                'Presentaciones/Ciencias/Tercero/CaracteristicasSistSolar-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/CuidadoHuesosYMusculos-VerónicaObando.pdf',
+                'Presentaciones/Ciencias/Tercero/DistinguirMaquinas-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/FuentesDeEnergia-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/FuncionHuesosYMusculos-VerónicaObando.pdf',
+                'Presentaciones/Ciencias/Tercero/HuesosYMusculos-VerónicaObando.pdf',
+                'Presentaciones/Ciencias/Tercero/ImportanciaMediciones-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/ManejoMaquinas-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/Medicina-Georgina Jiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/PrediccionesTIempo-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/SeresVivos-VerónicaObando.pdf',
+                'Presentaciones/Ciencias/Tercero/SistemaSolar-GeorginaJiménez.pdf',
+                'Presentaciones/Ciencias/Tercero/UtilidadNaturaleza-VerónicaObando.pdf',
+            ],
+            'Cuarto': [
+                'Presentaciones/Ciencias/Cuarto/Biodiversidad-FabiolaCamacho.pdf',
+                'Presentaciones/Ciencias/Cuarto/BiodiversidadCR-FabiolaCamacho.pdf',
+                'Presentaciones/Ciencias/Cuarto/Eclipses-MaripazMuñoz.pdf',
+                'Presentaciones/Ciencias/Cuarto/Luz-FabiolaCamacho.pdf',
+                'Presentaciones/Ciencias/Cuarto/Luz-MaripazMuñoz.pdf',
+                'Presentaciones/Ciencias/Cuarto/MovimientoTierra-MaripazMuñoz.pdf',
+                'Presentaciones/Ciencias/Cuarto/SistemaInmunologico-FabiolaCamacho.pdf',
+                'Presentaciones/Ciencias/Cuarto/TransferenciaDeCalor-MaripazMuñoz.pdf',
+            ],
+            'Septimo': [
+                'Presentaciones/Ciencias/Septimo/AgregacionYCambiosFisicos-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/AportesDeCienciaYTecnologia-ErrolFallas.pdf',
+                'Presentaciones/Ciencias/Septimo/AvancesDeCienciaYTecnologia-ErrolFallas.pdf',
+                'Presentaciones/Ciencias/Septimo/ContaminacionYCambioClimatico-ErrolFallas.pdf',
+                'Presentaciones/Ciencias/Septimo/EstimacionYMedicion-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/EstructuraCelular-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/FactoresDeConversion-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/GeneralidadesDeLaCelula-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/ImportanciaDeCambiosFYQ-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/ImportanciaDelRecursoHidrico-ErrolFallas.pdf',
+                'Presentaciones/Ciencias/Septimo/ImportanciaDelSIU-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/LaCelula-CristoferMoya.pdf',
+                'Presentaciones/Ciencias/Septimo/Mezclas-ErrolFallas.pdf',
+                'Presentaciones/Ciencias/Septimo/PropiedadesDeLosMateriales-CristoferMoya.pdf',
+            ],
+            'Noveno': [
+                'Presentaciones/Ciencias/Noveno/CompuestosQuimicos-EmilioHerrera.pdf',
+                'Presentaciones/Ciencias/Noveno/ConservacionDeLaMateria-ValeriaBarqueroUmaña.pdf',
+                'Presentaciones/Ciencias/Noveno/ConservacionEnEcuaciones-ValeriaBarqueroUmaña.pdf',
+                'Presentaciones/Ciencias/Noveno/ConservacionEnVidaCotidiana-ValeriaBarqueroUmaña.pdf',
+                'Presentaciones/Ciencias/Noveno/EjemplosCompuestosQuimicos-EmilioHerrera.pdf',
+                'Presentaciones/Ciencias/Noveno/ImportanciaDeReaccionesEnIndustria-ValeriaBarqueroUmaña.pdf',
+                'Presentaciones/Ciencias/Noveno/Moleculas-EmilioHerrera.pdf',
+                'Presentaciones/Ciencias/Noveno/PracticaCompuestosQuimicos-EmilioHerrera.pdf',
+                'Presentaciones/Ciencias/Noveno/ReaccionesQuimicas-ValeriaBarqueroUmaña.pdf',
+                'Presentaciones/Ciencias/Noveno/ReaccionesEnMateriales-ValeriaBarqueroUmaña.pdf',
+                'Presentaciones/Ciencias/Noveno/ReaccionesEnProcesosBiologicosEIndustriales-ValeriaBarqueroUmaña.pdf',
+            ],
+            
+        };
+
+        let currentCategory = null;
+
+        // Función para crear botones de categoría
+        function createCategoryButtons() {
+            const container = document.getElementById('categoryButtons');
+            
+            Object.keys(pdfCategories).forEach(categoryName => {
+                const button = document.createElement('button');
+                button.className = 'category-button';
+                button.textContent = categoryName;
+                button.onclick = () => showCategory(categoryName);
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Función para mostrar una categoría específica
+        function showCategory(categoryName) {
+            currentCategory = categoryName;
+            const files = pdfCategories[categoryName];
+            
+            // Actualizar botones de categoría para mostrar cuál está activo
+            document.querySelectorAll('.category-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === categoryName) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Crear botones de PDF para la categoría seleccionada
+            createPdfButtons(files);
+        }
+
+        // Función para crear botones de PDF
+        function createPdfButtons(files) {
+            const container = document.getElementById('pdfButtons');
+            container.innerHTML = ''; // Limpiar botones anteriores
+            
+            files.forEach((filePath, index) => {
+                // Extraer el nombre del archivo para el botón
+                const fileName = filePath.split('/').pop().replace(/%2C/g, ',');
+                const displayName = fileName.replace('.pdf', '').replace(/,/g, ' - ');
+                
+                // Crear el botón
+                const button = document.createElement('a');
+                button.href = filePath;
+                button.download = '';
+                button.className = 'download-button';
+                
+                button.innerHTML = `
+                    <div class="button-icon">📄</div>
+                    <span>${displayName}</span>
+                `;
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            createCategoryButtons();
+            // Mostrar la primera categoría por defecto
+            const firstCategory = Object.keys(pdfCategories)[0];
+            showCategory(firstCategory);
+        });
+    </script>
+</body>
+</html>

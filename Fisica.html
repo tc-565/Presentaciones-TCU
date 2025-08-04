@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Presentaciones Fisica</title>
+</head>
+<body>
+    <div class="main-content">
+
+        <a href="index.html" class="menu-button">← Menú Principal</a>
+
+        <h1>Secciones:</h1>
+        
+        <div class="category-buttons" id="categoryButtons">
+        </div>
+       
+        <div class="button-container" id="pdfButtons">
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANTE: Para agregar presentaciones se debe editar esta seccion para que la incluya
+        // Organizar archivos por categorías
+        const pdfCategories = {
+            'Decimo': [
+                'Presentaciones/Fisica/Decimo/EnergiaEjercicios-DanielaZúñiga.pdf',
+                'Presentaciones/Fisica/Decimo/GravitacionsEjercicios-DanielaZúñiga.pdf',
+                'Presentaciones/Fisica/Decimo/LeyesDeNewton-DanielaZúñiga.pdf',
+                'Presentaciones/Fisica/Decimo/LeyesDeNewtonEjercicios-DanielaZúñiga.pdf',
+                'Presentaciones/Fisica/Decimo/MovimientoEjercicios-DanielaZúñiga.pdf',
+                'Presentaciones/Fisica/Decimo/PotenciaEjercicios-DanielaZúñiga.pdf',
+                'Presentaciones/Fisica/Decimo/TrabajoMecanicoEjercicios-DanielaZúñiga.pdf',
+            ],
+            'Undecimo': [
+                'Presentaciones/Fisica/Undecimo/AplicacionesHidroestatica-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/CamposMagneticos-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/FenomenosNaturales-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/HidroEstatica-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/ImportanciaDeLaRadiacion-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/LeyDeBoyle-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/LeyDeOhm-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/LeyDeOhmMapaConceptual-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/Ondas-GabrielaZeledon.pdf',
+                'Presentaciones/Fisica/Undecimo/RelatividadEnTecnologia-GabrielaZeledon.pdf',
+            ],
+            
+        };
+
+        let currentCategory = null;
+
+        // Función para crear botones de categoría
+        function createCategoryButtons() {
+            const container = document.getElementById('categoryButtons');
+            
+            Object.keys(pdfCategories).forEach(categoryName => {
+                const button = document.createElement('button');
+                button.className = 'category-button';
+                button.textContent = categoryName;
+                button.onclick = () => showCategory(categoryName);
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Función para mostrar una categoría específica
+        function showCategory(categoryName) {
+            currentCategory = categoryName;
+            const files = pdfCategories[categoryName];
+            
+            // Actualizar botones de categoría para mostrar cuál está activo
+            document.querySelectorAll('.category-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === categoryName) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Crear botones de PDF para la categoría seleccionada
+            createPdfButtons(files);
+        }
+
+        // Función para crear botones de PDF
+        function createPdfButtons(files) {
+            const container = document.getElementById('pdfButtons');
+            container.innerHTML = ''; // Limpiar botones anteriores
+            
+            files.forEach((filePath, index) => {
+                // Extraer el nombre del archivo para el botón
+                const fileName = filePath.split('/').pop().replace(/%2C/g, ',');
+                const displayName = fileName.replace('.pdf', '').replace(/,/g, ' - ');
+                
+                // Crear el botón
+                const button = document.createElement('a');
+                button.href = filePath;
+                button.download = '';
+                button.className = 'download-button';
+                
+                button.innerHTML = `
+                    <div class="button-icon">📄</div>
+                    <span>${displayName}</span>
+                `;
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            createCategoryButtons();
+            // Mostrar la primera categoría por defecto
+            const firstCategory = Object.keys(pdfCategories)[0];
+            showCategory(firstCategory);
+        });
+    </script>
+</body>
+</html>

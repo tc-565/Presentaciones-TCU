@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>Presentaciones Biologia</title>
+</head>
+<body>
+    <div class="main-content">
+
+        <a href="index.html" class="menu-button">← Menú Principal</a>
+
+        <h1>Secciones:</h1>
+        
+        <div class="category-buttons" id="categoryButtons">
+        </div>
+       
+        <div class="button-container" id="pdfButtons">
+        </div>
+    </div>
+
+    <script>
+        // IMPORTANTE: Para agregar presentaciones se debe editar esta seccion para que la incluya
+        // Organizar archivos por categorías
+        const pdfCategories = {
+            'Decimo': [
+                'Presentaciones/Biologia/Decimo/HistoriaDeLaGenetica-AdrianaHalvonik.pdf',
+                'Presentaciones/Biologia/Decimo/PruebasDeEvolucion-AdrianaHalvonik.pdf',
+            ],
+            'Undecimo': [
+                'Presentaciones/Biologia/Undecimo/CiclosBiogeoqumicos-AdrianaHalvonik.pdf',
+                'Presentaciones/Biologia/Undecimo/InteraccionesDeLosSeresVivos-MurielleMoya.pdf',
+            ],
+
+        };
+
+        let currentCategory = null;
+
+        // Función para crear botones de categoría
+        function createCategoryButtons() {
+            const container = document.getElementById('categoryButtons');
+            
+            Object.keys(pdfCategories).forEach(categoryName => {
+                const button = document.createElement('button');
+                button.className = 'category-button';
+                button.textContent = categoryName;
+                button.onclick = () => showCategory(categoryName);
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Función para mostrar una categoría específica
+        function showCategory(categoryName) {
+            currentCategory = categoryName;
+            const files = pdfCategories[categoryName];
+            
+            // Actualizar botones de categoría para mostrar cuál está activo
+            document.querySelectorAll('.category-button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent === categoryName) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Crear botones de PDF para la categoría seleccionada
+            createPdfButtons(files);
+        }
+
+        // Función para crear botones de PDF
+        function createPdfButtons(files) {
+            const container = document.getElementById('pdfButtons');
+            container.innerHTML = ''; // Limpiar botones anteriores
+            
+            files.forEach((filePath, index) => {
+                // Extraer el nombre del archivo para el botón
+                const fileName = filePath.split('/').pop().replace(/%2C/g, ',');
+                const displayName = fileName.replace('.pdf', '').replace(/,/g, ' - ');
+                
+                // Crear el botón
+                const button = document.createElement('a');
+                button.href = filePath;
+                button.download = '';
+                button.className = 'download-button';
+                
+                button.innerHTML = `
+                    <div class="button-icon">📄</div>
+                    <span>${displayName}</span>
+                `;
+                
+                container.appendChild(button);
+            });
+        }
+
+        // Inicializar al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            createCategoryButtons();
+            // Mostrar la primera categoría por defecto
+            const firstCategory = Object.keys(pdfCategories)[0];
+            showCategory(firstCategory);
+        });
+    </script>
+</body>
+</html>
